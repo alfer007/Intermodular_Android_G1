@@ -1,5 +1,6 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -58,7 +59,7 @@ fun HeaderSection() {
     Text(
         text = "Create Account",
         style = MaterialTheme.typography.headlineMedium.copy(
-            color = Color.Black,
+            color = Color(0xFF278498),
             fontWeight = FontWeight.Bold
         )
     )
@@ -124,8 +125,11 @@ fun BodySection(
         onClick = {  },
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)
-    ) {
+            .height(48.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF278498)
+        )
+        ) {
         Text(text = "Continue")
     }
 }
