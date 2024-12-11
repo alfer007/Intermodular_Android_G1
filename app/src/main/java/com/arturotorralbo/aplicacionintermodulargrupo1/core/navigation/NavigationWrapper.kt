@@ -17,7 +17,7 @@ fun NavigationWrapper() {
             RegisterScreen{navController.navigate(Login)}
         }
         composable<Login> {
-            LoginScreen()
+            LoginScreen{navController.navigate(Register)}
         }
     }
 
