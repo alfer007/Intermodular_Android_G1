@@ -1,6 +1,5 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -19,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RegisterScreen(navigateToLogin: () -> Unit ) {
+fun RegisterScreen(navigateToLogin: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -57,14 +56,14 @@ fun RegisterScreen(navigateToLogin: () -> Unit ) {
 @Composable
 fun HeaderSection() {
     Text(
-        text = "Create Account",
+        text = "Register",
         style = MaterialTheme.typography.headlineMedium.copy(
             color = Color(0xFF278498),
             fontWeight = FontWeight.Bold
         )
     )
     Text(
-        text = "Fill your information below or register with your social account.",
+        text = "Fill your information below to create an account.",
         style = MaterialTheme.typography.bodyMedium,
         color = Color.Gray,
         modifier = Modifier.padding(vertical = 8.dp),
@@ -104,6 +103,35 @@ fun BodySection(
 
     Spacer(modifier = Modifier.height(16.dp))
 
+    PasswordField(
+        password = password,
+        onPasswordChange = onPasswordChange,
+        passwordVisible = passwordVisible,
+        onPasswordVisibilityChange = onPasswordVisibilityChange
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Button(
+        onClick = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF278498)
+        )
+    ) {
+        Text(text = "Continue")
+    }
+}
+
+@Composable
+fun PasswordField(
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    passwordVisible: Boolean,
+    onPasswordVisibilityChange: (Boolean) -> Unit
+) {
     OutlinedTextField(
         value = password,
         onValueChange = onPasswordChange,
@@ -118,20 +146,6 @@ fun BodySection(
         },
         modifier = Modifier.fillMaxWidth()
     )
-
-    Spacer(modifier = Modifier.height(24.dp))
-
-    Button(
-        onClick = {  },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF278498)
-        )
-        ) {
-        Text(text = "Continue")
-    }
 }
 
 @Composable
@@ -144,7 +158,7 @@ fun FooterSection(navigateToLogin: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
-        TextButton(onClick = {navigateToLogin() }) {
+        TextButton(onClick = { navigateToLogin() }) {
             Text(
                 text = "Login",
                 style = MaterialTheme.typography.bodyMedium,
