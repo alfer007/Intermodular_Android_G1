@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.arturotorralbo.aplicacionintermodulargrupo1.home.presentation.RoomDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
 
@@ -19,6 +20,8 @@ fun NavigationWrapper() {
         composable<Login> {
             LoginScreen{navController.navigate(Register)}
         }
+        composable<RoomDetail> {
+            RoomDetailScreen {}
+        }
     }
-
 }
