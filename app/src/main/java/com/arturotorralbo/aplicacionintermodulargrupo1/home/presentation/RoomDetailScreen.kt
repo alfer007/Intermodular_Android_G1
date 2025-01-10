@@ -1,6 +1,6 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.home.presentation
 
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,21 +28,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.arturotorralbo.aplicacionintermodulargrupo1.R
+import coil3.compose.AsyncImage
+
 
 @Composable
 fun RoomDetailScreen(function: () -> Unit) {
 
     val galleryImages = listOf(
-        R.drawable.pexelscocina,
-        R.drawable.pexelsdormitorio,
-        R.drawable.pexelshabitacion,
-        R.drawable.pexelssalon,
-        R.drawable.pexelsmueble
+        "https://i.imgur.com/IOc6lzh.jpg",
+        "https://i.imgur.com/hQAZDyJ.jpg",
+        "https://i.imgur.com/uHNMzH2.jpg",
+        "https://i.imgur.com/CedsxFC.jpg",
+        "https://i.imgur.com/HKXgnd7.jpg"
     )
 
     Column(
@@ -55,9 +55,9 @@ fun RoomDetailScreen(function: () -> Unit) {
                 .fillMaxWidth()
                 .fillMaxHeight(0.4f)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.pexelscomedor),
-                contentDescription = "Home Header Image",
+            AsyncImage(
+                model = "https://i.imgur.com/jzTUxDq.jpeg",
+                contentDescription = "RoomDetail - Suit Header Image",
                 modifier = Modifier
                     .fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -127,7 +127,7 @@ fun FeatureTag(text: String) {
 }
 
 @Composable
-fun GallerySection(imageList: List<Int>) {
+fun GallerySection(imageList: List<String>) {
 
     val visibleImages = 3
     val extraImagesCount = if (imageList.size > visibleImages) imageList.size - visibleImages else 0
@@ -138,19 +138,22 @@ fun GallerySection(imageList: List<Int>) {
             .padding(vertical = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
     ) {
-
-        items(imageList.take(visibleImages - 1)) { imageRes ->
-            Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = "Gallery Image",
+        items(imageList.take(visibleImages - 1)) { imageUrl ->
+            Box(
                 modifier = Modifier
                     .size(100.dp)
-                    .clip(MaterialTheme.shapes.small),
-                contentScale = ContentScale.Crop
-            )
+                    .clip(MaterialTheme.shapes.small)
+            ) {
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = "Gallery Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
 
-        if (imageList.isNotEmpty()) {
+        if (imageList.size >= visibleImages) {
             item {
                 Box(
                     modifier = Modifier
@@ -158,8 +161,8 @@ fun GallerySection(imageList: List<Int>) {
                         .clip(MaterialTheme.shapes.small),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = imageList[visibleImages - 1]),
+                    AsyncImage(
+                        model = imageList[visibleImages - 1],
                         contentDescription = "Gallery Image",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
