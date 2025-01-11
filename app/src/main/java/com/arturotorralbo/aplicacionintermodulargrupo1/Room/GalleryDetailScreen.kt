@@ -38,7 +38,7 @@ fun GalleryDetailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Black)
-                .padding(16.dp),
+                .padding(horizontal = 20.dp, vertical = 50.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
@@ -58,7 +58,6 @@ fun GalleryDetailScreen(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            contentAlignment = Alignment.Center
         ) {
             AsyncImage(
                 model = imageList[selectedIndex],
@@ -74,7 +73,7 @@ fun GalleryDetailScreen(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(imageList) { imageUrl ->

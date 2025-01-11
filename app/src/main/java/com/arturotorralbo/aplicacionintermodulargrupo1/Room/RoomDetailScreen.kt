@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
@@ -36,7 +37,7 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.GalleryDetail
-
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
 
 
 @Composable
@@ -49,68 +50,90 @@ fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel)
         "https://i.imgur.com/HKXgnd7.jpg"
     )
 
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
     ) {
-        Row(
+        AsyncImage(
+            model = "https://i.imgur.com/jzTUxDq.jpeg",
+            contentDescription = "RoomDetail - Suit Header Image",
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.4f)
+                .fillMaxHeight(0.45f),
+            contentScale = ContentScale.Crop
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            AsyncImage(
-                model = "https://i.imgur.com/jzTUxDq.jpeg",
-                contentDescription = "RoomDetail - Suit Header Image",
+            Spacer(
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.4f)
             )
-        }
-        Text(
-            text = "Suit Presidencial",
-            style = MaterialTheme.typography.headlineMedium.copy(
-                color = Color(0xFF278498),
-                fontWeight = FontWeight.Bold
-            )
-        )
-        Row {
-            Icon(imageVector = Icons.Default.LocationOn, contentDescription = "Location")
-            Text(
-                text = "Fill your information below to create an account.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray,
-                modifier = Modifier.padding(vertical = 8.dp),
-                textAlign = TextAlign.Center
-            )
-        }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            FeatureTag(text = "4 bed")
-            FeatureTag(text = "2 bath")
-            FeatureTag(text = "320 sq. m.")
-        }
-        Text(
-            text = "Las etiquetas estarán separadas entre sí por 10.dp y seguirán distribuyéndose uniformemente o según el arreglo horizontal que elijas (Arrangement.SpaceEvenly o cualquiera).",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray,
-            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "Gallery",
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp)
-        )
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(topStart = 35.dp, topEnd = 35.dp))
+                    .background(Color.White)
+                    .padding(16.dp),
+                verticalAlignment = Alignment.Top
+            ){
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(0.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(
+                        text = "Suit Presidencial",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            color = Color(0xFF278498),
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Row {
+                        Icon(imageVector = Icons.Default.LocationOn, contentDescription = "Location")
+                        Text(
+                            text = "Fill your information below to create an account.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        FeatureTag(text = "4 bed")
+                        FeatureTag(text = "2 bath")
+                        FeatureTag(text = "320 sq. m.")
+                    }
+                    Text(
+                        text = "Las etiquetas estarán separadas entre sí por 10.dp y seguirán distribuyéndose uniformemente o según el arreglo horizontal que elijas (Arrangement.SpaceEvenly o cualquiera).",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Gallery",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(top = 16.dp, start = 16.dp)
+                    )
 
-        GallerySection(navController, roomViewModel = roomViewModel, imageList = galleryImages)
+                    GallerySection(navController, roomViewModel = roomViewModel, imageList = galleryImages)
 
-        Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
-        RentButton(price = "900") {
+                    RentButton(price = "900") {  }
+
+
+                }
+
+            }
 
         }
     }
@@ -169,10 +192,10 @@ fun GallerySection(
                         .clip(MaterialTheme.shapes.small)
                         .clickable {
                             if (imageList.isNotEmpty()) {
-                            roomViewModel.setGalleryImages(imageList)
-                            navController.navigate(GalleryDetail)
-                        }
-                                   },
+                                roomViewModel.setGalleryImages(imageList)
+                                navController.navigate(GalleryDetail)
+                            }
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(

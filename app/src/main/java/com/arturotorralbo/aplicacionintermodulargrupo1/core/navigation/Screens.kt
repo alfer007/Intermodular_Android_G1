@@ -15,4 +15,7 @@ object RoomDetail
 object GalleryDetail
 
 @Serializable
+object Home
+
+@Serializable
 object Search

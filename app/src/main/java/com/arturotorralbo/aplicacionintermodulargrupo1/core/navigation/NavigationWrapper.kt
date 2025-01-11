@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.GalleryDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.RoomDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
+import com.arturotorralbo.aplicacionintermodulargrupo1.home.HomeScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.SearchScreen
@@ -28,6 +29,9 @@ fun NavigationWrapper() {
         }
         composable<RoomDetail> {
             RoomDetailScreen(navController, roomViewModel)
+        }
+        composable<Home> {
+            HomeScreen(navController)
         }
         composable<GalleryDetail> {
             val galleryImages = roomViewModel.galleryImages.value ?: emptyList()
