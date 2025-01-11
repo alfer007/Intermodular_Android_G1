@@ -7,12 +7,13 @@ import androidx.navigation.compose.rememberNavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.home.presentation.RoomDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.SearchScreen
 
 
 @Composable
 fun NavigationWrapper() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Register) {
+    NavHost(navController = navController, startDestination = Search) {
 
         composable<Register> {
             RegisterScreen{navController.navigate(Login)}
@@ -22,6 +23,9 @@ fun NavigationWrapper() {
         }
         composable<RoomDetail> {
             RoomDetailScreen {}
+        }
+        composable<Search> {
+            SearchScreen()
         }
     }
 }

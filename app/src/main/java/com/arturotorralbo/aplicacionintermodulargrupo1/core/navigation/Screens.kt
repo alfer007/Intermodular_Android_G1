@@ -11,4 +11,5 @@ object Register
 @Serializable
 object RoomDetail
 
-
+@Serializable
+object Search
