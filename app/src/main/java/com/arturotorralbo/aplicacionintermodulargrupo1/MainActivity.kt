@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.NavigationWrapper
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.AplicacionIntermodularGrupo1Theme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

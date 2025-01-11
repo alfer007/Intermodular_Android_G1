@@ -1,7 +1,8 @@
-package com.arturotorralbo.aplicacionintermodulargrupo1.home.presentation
+package com.arturotorralbo.aplicacionintermodulargrupo1.Room
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,12 +32,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.GalleryDetail
+
 
 
 @Composable
-fun RoomDetailScreen(function: () -> Unit) {
-
+fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel) {
     val galleryImages = listOf(
         "https://i.imgur.com/IOc6lzh.jpg",
         "https://i.imgur.com/hQAZDyJ.jpg",
@@ -102,7 +106,7 @@ fun RoomDetailScreen(function: () -> Unit) {
             modifier = Modifier.padding(top = 16.dp, start = 16.dp)
         )
 
-        GallerySection(imageList = galleryImages)
+        GallerySection(navController, roomViewModel = roomViewModel, imageList = galleryImages)
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -127,7 +131,11 @@ fun FeatureTag(text: String) {
 }
 
 @Composable
-fun GallerySection(imageList: List<String>) {
+fun GallerySection(
+    navController: NavController,
+    imageList: List<String>,
+    roomViewModel: RoomViewModel
+) {
 
     val visibleImages = 3
     val extraImagesCount = if (imageList.size > visibleImages) imageList.size - visibleImages else 0
@@ -158,7 +166,13 @@ fun GallerySection(imageList: List<String>) {
                 Box(
                     modifier = Modifier
                         .size(100.dp)
-                        .clip(MaterialTheme.shapes.small),
+                        .clip(MaterialTheme.shapes.small)
+                        .clickable {
+                            if (imageList.isNotEmpty()) {
+                            roomViewModel.setGalleryImages(imageList)
+                            navController.navigate(GalleryDetail)
+                        }
+                                   },
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(

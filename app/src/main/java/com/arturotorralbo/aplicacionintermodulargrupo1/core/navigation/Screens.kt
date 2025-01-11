@@ -12,4 +12,7 @@ object Register
 object RoomDetail
 
 @Serializable
+object GalleryDetail
+
+@Serializable
 object Search
