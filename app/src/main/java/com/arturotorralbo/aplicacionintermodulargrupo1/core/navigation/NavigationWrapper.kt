@@ -9,7 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.GalleryDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.RoomDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
-import com.arturotorralbo.aplicacionintermodulargrupo1.home.HomeScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.SearchScreen
@@ -19,7 +20,9 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.Searc
 fun NavigationWrapper() {
     val navController = rememberNavController()
     val roomViewModel: RoomViewModel = hiltViewModel()
-    NavHost(navController = navController, startDestination = RoomDetail) {
+    val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
+
+    NavHost(navController = navController, startDestination = Search) {
 
         composable<Register> {
             RegisterScreen { navController.navigate(Login) }
@@ -30,9 +33,6 @@ fun NavigationWrapper() {
         composable<RoomDetail> {
             RoomDetailScreen(navController, roomViewModel)
         }
-        composable<Home> {
-            HomeScreen(navController)
-        }
         composable<GalleryDetail> {
             val galleryImages = roomViewModel.galleryImages.value ?: emptyList()
 
@@ -41,10 +41,22 @@ fun NavigationWrapper() {
                 initialSelectedIndex = 0,
                 onBack = { navController.popBackStack() }
             )
-
         }
         composable<Search> {
-            SearchScreen()
+            SearchScreen(
+                onNavigateToSelectRoom = { start, end, guests ->
+                    selectRoomViewModel.updateDetails(start, end, guests)
+                    navController.navigate(SelectRoom)
+                }
+            )
+        }
+        composable<SelectRoom> {
+            SelectRoomScreen(
+                startDate = selectRoomViewModel.startDate.value,
+                endDate = selectRoomViewModel.endDate.value,
+                numberOfGuests = selectRoomViewModel.numberOfGuests.value,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

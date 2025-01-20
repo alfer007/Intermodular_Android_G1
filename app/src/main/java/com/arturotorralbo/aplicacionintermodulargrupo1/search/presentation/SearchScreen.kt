@@ -1,6 +1,7 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation
 
 import android.app.DatePickerDialog
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -22,13 +23,14 @@ import coil3.compose.AsyncImage
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun SearchScreen() {
+fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -79,17 +81,17 @@ fun SearchScreen() {
                             .fillMaxHeight(0.1f)
                     )
                     AsyncImage(
-                        model = "https://i.imgur.com/MyZSgEv.png",
+                        model = "https://imgur.com/L3IkhzC.png",
                         contentDescription = "Search Image",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight(0.2f)
+                            .fillMaxHeight(0.25f)
                     )
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight(0.05f)
+                            .fillMaxHeight(0.1f)
                     )
                     Button(
                         onClick = {
@@ -134,7 +136,7 @@ fun SearchScreen() {
                         ) {
                             Text(
                                 text = if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
-                                    "$startDate - $endDate"
+                                    "$startDate → $endDate"
                                 } else {
                                     "Seleccionar fechas"
                                 },
@@ -178,7 +180,7 @@ fun SearchScreen() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Número de inquilinos: $numberOfGuests",
+                                text = "Número de huéspedes: $numberOfGuests",
                                 textAlign = TextAlign.Center,
                                 fontSize = 16.sp,
                                 color = Color.White,
@@ -237,7 +239,9 @@ fun SearchScreen() {
 
                     Button(
                         onClick = {
-                            // Lógica del botón Consultar
+                            if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                                onNavigateToSelectRoom(startDate, endDate, numberOfGuests)
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -256,9 +260,15 @@ fun SearchScreen() {
                             color = Color.White
                         )
                     }
+
+                    Text(
+                        text = "Consultar",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                 }
             }
         }
     }
 }
-
