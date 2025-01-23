@@ -56,7 +56,7 @@ fun SelectRoomScreen(
                     .clip(RoundedCornerShape(bottomStart = 35.dp, bottomEnd = 35.dp))
                     .background(Color.White)
                     .border(
-                        width = 0.50.dp,
+                        width = 2.dp,
                         color = PrimaryColor,
                         shape = RoundedCornerShape(bottomStart = 35.dp, bottomEnd = 35.dp)
                     )
@@ -69,11 +69,11 @@ fun SelectRoomScreen(
                     tint = PrimaryColor,
                     modifier = Modifier
                         .size(30.dp)
-                        .padding(top = 7.dp)
+                        .padding(top = 3.dp)
                         .clickable { onBackClick() }
                 )
 
-                Box(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(30.dp))
 
                 AsyncImage(
                     model = "https://i.imgur.com/pgExtpm.png",
@@ -93,6 +93,15 @@ fun SelectRoomScreen(
                     .background(Color.White)
                     .padding(16.dp)
             ) {
+                AsyncImage(
+                    model = "https://i.imgur.com/NQ8qqge.png",
+                    contentDescription = "Progress Bar",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(70.dp)
+                        .padding(10.dp)
+                )
             }
 
             Box(

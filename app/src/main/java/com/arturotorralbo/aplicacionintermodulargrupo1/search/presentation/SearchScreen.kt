@@ -22,10 +22,12 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.ErrorColor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +42,9 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
 
     var showMenu by remember { mutableStateOf(false) }
     var numberOfGuests by remember { mutableStateOf(1) }
+
+    var isInvalidDate by remember { mutableStateOf(false) }
+    val today = Calendar.getInstance()
 
     Box(
         modifier = Modifier
@@ -75,10 +80,19 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(0.dp)
                 ) {
+                    AsyncImage(
+                        model = "https://i.imgur.com/wY5g4Cb.png",
+                        contentDescription = "Progress Bar",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .size(70.dp)
+                            .padding(16.dp)
+                    )
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight(0.1f)
+                            .fillMaxHeight(0.05f)
                     )
                     AsyncImage(
                         model = "https://imgur.com/L3IkhzC.png",
@@ -101,6 +115,14 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                                     val startCalendar = Calendar.getInstance()
                                     startCalendar.set(year, month, dayOfMonth)
                                     startDate = dateFormat.format(startCalendar.time)
+                                    val selectedDate = startCalendar.time
+
+                                    if (selectedDate.before(Calendar.getInstance().time) || startCalendar.before(today)) {
+                                        isInvalidDate = true
+                                    } else {
+                                        startDate = dateFormat.format(selectedDate)
+                                        isInvalidDate = false
+                                    }
 
                                     DatePickerDialog(
                                         context,
@@ -108,6 +130,14 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                                             val endCalendar = Calendar.getInstance()
                                             endCalendar.set(endYear, endMonth, endDayOfMonth)
                                             endDate = dateFormat.format(endCalendar.time)
+                                            val endSelectedDate = endCalendar.time
+
+                                            if (endSelectedDate.before(selectedDate) || startCalendar.before(today)) {
+                                                isInvalidDate = true
+                                            } else {
+                                                endDate = dateFormat.format(endSelectedDate)
+                                                isInvalidDate = false
+                                            }
                                         },
                                         calendar.get(Calendar.YEAR),
                                         calendar.get(Calendar.MONTH),
@@ -122,9 +152,9 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
-                            .border(1.dp, color = Color(0xFF278498), shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                            .border(1.dp, color = if (isInvalidDate) ErrorColor else Color(0xFF278498), shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
                             .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-                            .background(Color(0xFF278498)),
+                            .background(color = if (isInvalidDate) ErrorColor else Color(0xFF278498)),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent
                         )
@@ -247,10 +277,14 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .height(50.dp)
-                            .clip(RoundedCornerShape(15.dp))
-                            .background(Color(0xFF278498)),
+                            .clip(RoundedCornerShape(15.dp)),
+                        enabled = startDate.isNotEmpty() && endDate.isNotEmpty() && !isInvalidDate,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF278498)
+                            containerColor = if (startDate.isNotEmpty() && endDate.isNotEmpty() && !isInvalidDate) {
+                                Color(0xFF278498)
+                            } else {
+                                Color.Gray
+                            }
                         )
                     ) {
                         Text(

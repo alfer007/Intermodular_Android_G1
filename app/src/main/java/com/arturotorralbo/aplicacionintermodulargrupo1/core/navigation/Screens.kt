@@ -22,3 +22,6 @@ object Search
 
 @Serializable
 object SelectRoom
+
+@Serializable
+object Payment
