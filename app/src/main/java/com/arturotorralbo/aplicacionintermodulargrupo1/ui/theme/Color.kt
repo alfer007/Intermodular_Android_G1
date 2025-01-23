@@ -2,6 +2,7 @@ package com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val primaryColorBlue = Color(0xFF278498)
 val Purple80 = Color(0xFFD0BCFF)
 val ErrorColor = Color(0xFFE86055)
 val Pink80 = Color(0xFFEFB8C8)
