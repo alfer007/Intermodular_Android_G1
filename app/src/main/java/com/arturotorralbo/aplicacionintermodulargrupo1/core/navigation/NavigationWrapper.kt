@@ -14,6 +14,7 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomView
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.SearchScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.profile.presentation.ProfileScreen
 
 @Composable
 fun NavigationWrapper() {
@@ -21,7 +22,7 @@ fun NavigationWrapper() {
     val roomViewModel: RoomViewModel = hiltViewModel()
     val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = Search) {
+    NavHost(navController = navController, startDestination = Profile) {
 
         composable<Register> {
             RegisterScreen { navController.navigate(Login) }
@@ -31,6 +32,9 @@ fun NavigationWrapper() {
         }
         composable<RoomDetail> {
             RoomDetailScreen(navController, roomViewModel)
+        }
+        composable<Profile> {
+           ProfileScreen { navController.navigate(Profile) }
         }
         composable<GalleryDetail> {
             val galleryImages = roomViewModel.galleryImages.value ?: emptyList()
