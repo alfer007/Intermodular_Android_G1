@@ -9,11 +9,11 @@ plugins {
 
 android {
     namespace = "com.arturotorralbo.aplicacionintermodulargrupo1"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.arturotorralbo.aplicacionintermodulargrupo1"
-        minSdk = 34
+        minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+    implementation("androidx.media3:media3-exoplayer:1.5.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.5.0")
+    implementation("androidx.media3:media3-ui:1.5.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")

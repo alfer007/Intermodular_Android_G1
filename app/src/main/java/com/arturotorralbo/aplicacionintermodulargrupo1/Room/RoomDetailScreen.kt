@@ -37,7 +37,6 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.GalleryDetail
-import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
 
 
 @Composable
@@ -54,13 +53,14 @@ fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel)
         modifier = Modifier
             .fillMaxSize()
     ) {
+        //"https://i.imgur.com/jzTUxDq.jpeg"
         AsyncImage(
-            model = "https://i.imgur.com/jzTUxDq.jpeg",
+            model = "http://10.0.2.2:3000/images/habitacion.png",
             contentDescription = "RoomDetail - Suit Header Image",
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.45f),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
         Column(
             modifier = Modifier
