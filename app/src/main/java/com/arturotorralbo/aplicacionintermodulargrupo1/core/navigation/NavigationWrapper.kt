@@ -5,7 +5,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.arturotorralbo.aplicacionintermodulargrupo1.Home.HomeScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Payment.PaymentScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.GalleryDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.RoomDetailScreen
@@ -22,16 +21,13 @@ fun NavigationWrapper() {
     val roomViewModel: RoomViewModel = hiltViewModel()
     val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = RoomDetail) {
+    NavHost(navController = navController, startDestination = Search) {
 
         composable<Register> {
             RegisterScreen { navController.navigate(Login) }
         }
         composable<Login> {
             LoginScreen { navController.navigate(Register) }
-        }
-        composable<Home> {
-            HomeScreen(navController)
         }
         composable<RoomDetail> {
             RoomDetailScreen(navController, roomViewModel)

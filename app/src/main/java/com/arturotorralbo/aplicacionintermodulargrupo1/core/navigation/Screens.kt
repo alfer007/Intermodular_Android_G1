@@ -15,6 +15,9 @@ object RoomDetail
 object GalleryDetail
 
 @Serializable
+object Profile
+
+@Serializable
 object Home
 
 @Serializable
