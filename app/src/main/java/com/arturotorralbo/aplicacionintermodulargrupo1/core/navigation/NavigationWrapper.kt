@@ -1,5 +1,6 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation
 
+
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
