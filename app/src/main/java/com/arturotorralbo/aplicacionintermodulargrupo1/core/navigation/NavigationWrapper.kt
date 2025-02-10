@@ -1,11 +1,11 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.arturotorralbo.aplicacionintermodulargrupo1.Home.HomeScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Payment.PaymentScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.GalleryDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.RoomDetailScreen
@@ -22,25 +22,21 @@ fun NavigationWrapper() {
     val roomViewModel: RoomViewModel = hiltViewModel()
     val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = Search) {
-
+    NavHost(navController = navController, startDestination = Home) {
+        composable<Home> {
+            HomeScreen(navController)
+        }
         composable<Register> {
-            RegisterScreen { navController.navigate(Login) }
+            RegisterScreen(navController)
         }
         composable<Login> {
-            LoginScreen { navController.navigate(Register) }
+            LoginScreen(navController)
         }
         composable<RoomDetail> {
             RoomDetailScreen(navController, roomViewModel)
         }
         composable<GalleryDetail> {
-            val galleryImages = roomViewModel.galleryImages.value ?: emptyList()
-
-            GalleryDetailScreen(
-                imageList = galleryImages,
-                initialSelectedIndex = 0,
-                onBack = { navController.popBackStack() }
-            )
+            GalleryDetailScreen(navController, roomViewModel)
         }
         composable<Search> {
             SearchScreen(
@@ -55,7 +51,9 @@ fun NavigationWrapper() {
                 startDate = selectRoomViewModel.startDate.value,
                 endDate = selectRoomViewModel.endDate.value,
                 numberOfGuests = selectRoomViewModel.numberOfGuests.value,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                viewModel = roomViewModel,
+                navController = navController
             )
         }
         composable<Payment> {

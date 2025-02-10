@@ -16,9 +16,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 
 @Composable
-fun RegisterScreen(navigateToLogin: () -> Unit) {
+fun RegisterScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -45,12 +48,13 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
             password = password,
             onPasswordChange = { password = it },
             passwordVisible = passwordVisible,
-            onPasswordVisibilityChange = { passwordVisible = it }
+            onPasswordVisibilityChange = { passwordVisible = it },
+            navController = navController
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        FooterSection(navigateToLogin)
+        FooterSection(onClick = { navController.navigate(Login) })
     }
 }
 
@@ -81,7 +85,8 @@ fun BodySection(
     password: String,
     onPasswordChange: (String) -> Unit,
     passwordVisible: Boolean,
-    onPasswordVisibilityChange: (Boolean) -> Unit
+    onPasswordVisibilityChange: (Boolean) -> Unit,
+    navController: NavController
 ) {
     OutlinedTextField(
         value = username,
@@ -114,7 +119,7 @@ fun BodySection(
     Spacer(modifier = Modifier.height(24.dp))
 
     Button(
-        onClick = { },
+        onClick = { navController.navigate(Home) },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
@@ -150,7 +155,7 @@ fun PasswordField(
 }
 
 @Composable
-fun FooterSection(navigateToLogin: () -> Unit) {
+fun FooterSection(onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -159,7 +164,7 @@ fun FooterSection(navigateToLogin: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
-        TextButton(onClick = { navigateToLogin() }) {
+        TextButton(onClick = onClick) {
             Text(
                 text = "Login",
                 style = MaterialTheme.typography.bodyMedium,
