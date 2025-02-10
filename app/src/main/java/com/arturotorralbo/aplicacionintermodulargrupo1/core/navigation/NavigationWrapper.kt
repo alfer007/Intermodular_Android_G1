@@ -22,7 +22,7 @@ fun NavigationWrapper() {
     val roomViewModel: RoomViewModel = hiltViewModel()
     val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = Search) {
+    NavHost(navController = navController, startDestination = Payment) {
 
         composable<Register> {
             RegisterScreen { navController.navigate(Login) }

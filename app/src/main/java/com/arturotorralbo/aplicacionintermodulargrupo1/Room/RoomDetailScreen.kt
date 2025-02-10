@@ -55,7 +55,7 @@ fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel)
     ) {
         //"https://i.imgur.com/jzTUxDq.jpeg"
         AsyncImage(
-            model = "http://10.0.2.2:3000/images/habitacion.png",
+            model = "http://10.0.2.2:3000/images/pexelscomedor.jpg",
             contentDescription = "RoomDetail - Suit Header Image",
             modifier = Modifier
                 .fillMaxWidth()

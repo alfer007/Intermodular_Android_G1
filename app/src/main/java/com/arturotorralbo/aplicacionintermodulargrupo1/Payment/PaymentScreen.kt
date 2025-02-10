@@ -58,7 +58,6 @@ fun PaymentScreen(
     userEmail: String = "johndoe@example.com",
     onBackClick: () -> Unit
 ) {
-    // Estados mutables para los campos de texto
     var cardNumber by remember { mutableStateOf("") }
     var cardCVV by remember { mutableStateOf("") }
     var cardHolderName by remember { mutableStateOf("") }
@@ -71,7 +70,6 @@ fun PaymentScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // Encabezado con logo
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -109,7 +107,6 @@ fun PaymentScreen(
                 )
             }
 
-            // Contenido principal con scroll
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -120,25 +117,22 @@ fun PaymentScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    // Imagen de Progress Bar
                     AsyncImage(
                         model = "https://i.imgur.com/3Iwt2Xm.png",
                         contentDescription = "Progress Bar",
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(90.dp) // Altura fija para la imagen
+                            .height(90.dp)
                             .padding(16.dp)
                     )
 
-                    // Contenido desplazable
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                             .padding(16.dp)
                     ) {
-                        // Resumen de la reserva
                         Text(
                             text = "Resumen de la Reserva",
                             style = TextStyle(
@@ -149,7 +143,6 @@ fun PaymentScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        // Fechas y datos principales
                         Text("Fecha de inicio:", style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold))
                         Text(startDate, style = TextStyle(fontSize = 16.sp))
                         Spacer(modifier = Modifier.height(4.dp))
@@ -175,7 +168,6 @@ fun PaymentScreen(
                         Text(roomType, style = TextStyle(fontSize = 16.sp))
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Separador
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -184,7 +176,6 @@ fun PaymentScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Precio total
                         Text("Precio final:", style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold))
                         Text(
                             text = "${"%.2f".format(totalPrice)} €",
@@ -200,7 +191,6 @@ fun PaymentScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Información del usuario
                         Text(
                             text = "Información del Usuario",
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = PrimaryColor)
@@ -213,7 +203,6 @@ fun PaymentScreen(
                         Text(userEmail, style = TextStyle(fontSize = 16.sp))
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Separador
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -222,14 +211,12 @@ fun PaymentScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Datos de la tarjeta de crédito
                         Text(
                             text = "Datos de la Tarjeta de Crédito",
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = PrimaryColor)
                         )
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        // Número de tarjeta
                         TextField(
                             value = cardNumber,
                             onValueChange = { cardNumber = it },
@@ -238,12 +225,10 @@ fun PaymentScreen(
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
                         )
-                        // Código y nombre en una fila
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // Código CVV
                             TextField(
                                 value = cardCVV,
                                 onValueChange = { cardCVV = it },
@@ -252,7 +237,6 @@ fun PaymentScreen(
                                     .weight(1f)
                                     .padding(vertical = 4.dp)
                             )
-                            // Nombre del titular
                             TextField(
                                 value = cardHolderName,
                                 onValueChange = { cardHolderName = it },
@@ -265,7 +249,6 @@ fun PaymentScreen(
                     }
                 }
             }
-            // Pie con botón de pago
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
