@@ -16,9 +16,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Register
 
 @Composable
-fun LoginScreen(navigateToRegister: () -> Unit) {
+fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -43,12 +46,12 @@ fun LoginScreen(navigateToRegister: () -> Unit) {
             onPasswordChange = { password = it },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = it },
-
+            navController = navController
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        FooterSection(navigateToRegister)
+        FooterSection(onClick = { navController.navigate(Register)})
     }
 }
 
@@ -77,7 +80,8 @@ fun BodySection(
     password: String,
     onPasswordChange: (String) -> Unit,
     passwordVisible: Boolean,
-    onPasswordVisibilityChange: (Boolean) -> Unit
+    onPasswordVisibilityChange: (Boolean) -> Unit,
+    navController: NavController
 ) {
     OutlinedTextField(
         value = email,
@@ -100,7 +104,7 @@ fun BodySection(
     Spacer(modifier = Modifier.height(24.dp))
 
     Button(
-        onClick = {},
+        onClick = { navController.navigate(Home)},
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
@@ -136,7 +140,7 @@ fun PasswordField(
 }
 
 @Composable
-fun FooterSection(navigateToRegister: () -> Unit) {
+fun FooterSection(onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -145,7 +149,7 @@ fun FooterSection(navigateToRegister: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
-        TextButton(onClick = navigateToRegister) {
+        TextButton(onClick = onClick) {
             Text(
                 text = "Sign Up",
                 style = MaterialTheme.typography.bodyMedium,

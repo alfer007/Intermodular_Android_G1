@@ -2,7 +2,6 @@ package com.arturotorralbo.aplicacionintermodulargrupo1.Room
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,17 +13,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,32 +34,49 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
-import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.GalleryDetail
+import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.FeatureList
+import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.GalleryRow
+import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.RentButton
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Payment
 
 
 @Composable
 fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel) {
-    val galleryImages = listOf(
-        "https://i.imgur.com/IOc6lzh.jpg",
-        "https://i.imgur.com/hQAZDyJ.jpg",
-        "https://i.imgur.com/uHNMzH2.jpg",
-        "https://i.imgur.com/CedsxFC.jpg",
-        "https://i.imgur.com/HKXgnd7.jpg"
-    )
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        //"https://i.imgur.com/jzTUxDq.jpeg"
+    val selectedRoom by roomViewModel.selectedRoom.collectAsState()
+
+    if (selectedRoom == null) {
+        Text("No hay información de la habitación seleccionada", color = Color.Red)
+        return
+    }
+
+    val room = selectedRoom!!
+
+    Box(modifier = Modifier.fillMaxSize()) {
         AsyncImage(
-            model = "http://10.0.2.2:3000/images/pexelscomedor.jpg",
-            contentDescription = "RoomDetail - Suit Header Image",
+            model = room.imagenes.firstOrNull(),
+            contentDescription = "RoomDetail - Header Image",
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.45f),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Crop
         )
+
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .padding(30.dp)
+                .size(40.dp)
+                .background(Color(0xFF278498), shape = RoundedCornerShape(50)),
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Volver",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,7 +84,7 @@ fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel)
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.4f)
+                    .fillMaxHeight(0.3f)
             )
             Row(
                 modifier = Modifier
@@ -78,177 +93,69 @@ fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel)
                     .background(Color.White)
                     .padding(16.dp),
                 verticalAlignment = Alignment.Top
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(0.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     Text(
-                        text = "Suit Presidencial",
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        text = room.tipoHabitacion,
+                        style = MaterialTheme.typography.headlineLarge.copy(
                             color = Color(0xFF278498),
                             fontWeight = FontWeight.Bold
                         )
                     )
                     Row {
-                        Icon(imageVector = Icons.Default.LocationOn, contentDescription = "Location")
                         Text(
-                            text = "Fill your information below to create an account.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray,
+                            text = "Características y servicios: ",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.DarkGray,
                             modifier = Modifier.padding(vertical = 8.dp),
                             textAlign = TextAlign.Center
                         )
                     }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        FeatureTag(text = "4 bed")
-                        FeatureTag(text = "2 bath")
-                        FeatureTag(text = "320 sq. m.")
-                    }
+
+                    FeatureList(
+                        numPersonas = room.numPersonas,
+                        tamanyo = room.tamanyo,
+                        servicios = room.servicios
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
                     Text(
-                        text = "Las etiquetas estarán separadas entre sí por 10.dp y seguirán distribuyéndose uniformemente o según el arreglo horizontal que elijas (Arrangement.SpaceEvenly o cualquiera).",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                        text = room.descripcion,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.DarkGray,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 16.dp),
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "Gallery",
+                        text = "Gallería",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
                         modifier = Modifier.padding(top = 16.dp, start = 16.dp)
                     )
 
-                    GallerySection(navController, roomViewModel = roomViewModel, imageList = galleryImages)
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    GalleryRow(
+                        imageList = room.imagenes,
+                        roomViewModel = roomViewModel,
+                        navController = navController
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    RentButton(price = "900") {  }
-
-
-                }
-
-            }
-
-        }
-    }
-}
-
-@Composable
-fun FeatureTag(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyMedium.copy(
-            fontWeight = FontWeight.Bold
-        ),
-        color = Color.White,
-        modifier = Modifier
-            .background(color = Color(0xFF278498), shape = MaterialTheme.shapes.small)
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-    )
-}
-
-@Composable
-fun GallerySection(
-    navController: NavController,
-    imageList: List<String>,
-    roomViewModel: RoomViewModel
-) {
-
-    val visibleImages = 3
-    val extraImagesCount = if (imageList.size > visibleImages) imageList.size - visibleImages else 0
-
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
-    ) {
-        items(imageList.take(visibleImages - 1)) { imageUrl ->
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(MaterialTheme.shapes.small)
-            ) {
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = "Gallery Image",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
-
-        if (imageList.size >= visibleImages) {
-            item {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(MaterialTheme.shapes.small)
-                        .clickable {
-                            if (imageList.isNotEmpty()) {
-                                roomViewModel.setGalleryImages(imageList)
-                                navController.navigate(GalleryDetail)
-                            }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    AsyncImage(
-                        model = imageList[visibleImages - 1],
-                        contentDescription = "Gallery Image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-
-                    if (extraImagesCount > 0) {
-                        Box(
-                            modifier = Modifier
-                                .matchParentSize()
-                                .background(Color.Gray.copy(alpha = 0.7f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "+$extraImagesCount",
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
-                                ),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
+                    RentButton(price = "${room.precio}€") { navController.navigate(Payment) }
                 }
             }
         }
     }
 }
 
-@Composable
-fun RentButton(price: String, onClick: () -> Unit) {
-
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF278498)
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp)
-            .height(56.dp),
-        shape = MaterialTheme.shapes.medium
-    ) {
-        Text(
-            text = "Rent for $price/month",
-            style = MaterialTheme.typography.titleMedium.copy(
-                color = Color.White,
-                fontWeight = FontWeight.Bold
-            ),
-            textAlign = TextAlign.Center
-        )
-    }
-}

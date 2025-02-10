@@ -1,5 +1,6 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.core.di
 
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.RoomApiService
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.UserApiServices
 import com.google.gson.Gson
 import dagger.Module
@@ -18,7 +19,7 @@ object ApiClient {
     @Provides
     fun providesRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://localhost:3000/")
+            .baseUrl("http://10.0.2.2:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -27,5 +28,9 @@ object ApiClient {
     fun providesUserApiService(retrofit: Retrofit):UserApiServices{
         return retrofit.create(UserApiServices::class.java)
     }
-
+    @Singleton
+    @Provides
+    fun providesRoomApiService(retrofit: Retrofit): RoomApiService {
+        return retrofit.create(RoomApiService::class.java)
+    }
 }
