@@ -2,7 +2,7 @@ package com.arturotorralbo.aplicacionintermodulargrupo1.core.models
 
 data class Room(
     val idHabitacion: Int,
-    val tipoHabitacion: String, // Ahora solo almacenamos el nombre
+    val tipoHabitacion: String,  // Se mantiene como String (en JSON no es un objeto)
     val numPersonas: Int,
     val estado: String,
     val tamanyo: Int,

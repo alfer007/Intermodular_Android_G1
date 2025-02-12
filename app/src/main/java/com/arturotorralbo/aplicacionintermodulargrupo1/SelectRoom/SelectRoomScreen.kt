@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Composition
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +41,8 @@ import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.components.RoomCard
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.RoomDetail
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 val PrimaryColor = Color(0xFF278498)
 
@@ -53,6 +56,19 @@ fun SelectRoomScreen(
     navController: NavController
 ) {
     val rooms by viewModel.rooms.collectAsState()
+
+    fun formatDate(date: String): String {
+        val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return outputFormat.format(inputFormat.parse(date)!!)
+    }
+
+    LaunchedEffect(startDate, endDate, numberOfGuests) {
+        val formattedStartDate = formatDate(startDate)
+        val formattedEndDate = formatDate(endDate)
+        println("La fecha: $formattedStartDate")
+        viewModel.fetchRoomsByCriteria(formattedStartDate, formattedEndDate, numberOfGuests, false)
+    }
 
     Box(
         modifier = Modifier

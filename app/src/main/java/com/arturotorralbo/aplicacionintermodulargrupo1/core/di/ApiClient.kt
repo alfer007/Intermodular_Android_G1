@@ -1,5 +1,6 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.core.di
 
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.ReservaApiService
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.RoomApiService
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.UserApiServices
 import com.google.gson.Gson
@@ -32,5 +33,10 @@ object ApiClient {
     @Provides
     fun providesRoomApiService(retrofit: Retrofit): RoomApiService {
         return retrofit.create(RoomApiService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun providesReservaApiService(retrofit: Retrofit): ReservaApiService {
+        return retrofit.create(ReservaApiService::class.java)
     }
 }
