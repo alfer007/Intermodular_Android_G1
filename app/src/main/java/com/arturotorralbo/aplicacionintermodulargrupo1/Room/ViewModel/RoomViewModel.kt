@@ -28,18 +28,8 @@ class RoomViewModel @Inject constructor(
     fun fetchRoomsByCriteria(startDate: String, endDate: String, numPersonas: Int, extraCama: Boolean) {
         viewModelScope.launch {
             try {
+                _rooms.value = emptyList()
                 val response = repository.getRoomsByCriteria(startDate, endDate, numPersonas, extraCama)
-                _rooms.value = response
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun fetchRooms() {
-        viewModelScope.launch {
-            try {
-                val response = repository.getRooms()
                 _rooms.value = response
             } catch (e: Exception) {
                 e.printStackTrace()

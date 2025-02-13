@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
+import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 
 val PrimaryColor = Color(0xFF278498)
 
@@ -56,7 +57,8 @@ fun PaymentScreen(
     totalPrice: Double = 200.0,
     userName: String = "John Doe",
     userEmail: String = "johndoe@example.com",
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    selectRoomViewModel: SelectRoomViewModel
 ) {
     var cardNumber by remember { mutableStateOf("") }
     var cardCVV by remember { mutableStateOf("") }

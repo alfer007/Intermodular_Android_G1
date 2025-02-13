@@ -65,6 +65,9 @@ fun NavigationWrapper() {
                 startDate = selectRoomViewModel.startDate.value,
                 endDate = selectRoomViewModel.endDate.value,
                 numberOfGuests = selectRoomViewModel.numberOfGuests.value,
+                roomType = selectRoomViewModel.tipoHabitacion.value,
+                totalPrice = (selectRoomViewModel.precio.value * selectRoomViewModel.calculateNights(selectRoomViewModel.startDate.value, selectRoomViewModel.endDate.value)),
+                selectRoomViewModel = selectRoomViewModel,
                 onBackClick = { navController.popBackStack() }
             )
         }

@@ -10,13 +10,6 @@ class RoomRepository @Inject constructor(
     private val reservaApiService: ReservaApiService
 ) {
     private val BASE_URL = "http://10.0.2.2:3000"
-    suspend fun getRooms(): List<Room> {
-        return roomApiService.getRooms().map { room ->
-            room.copy(
-                imagenes = room.imagenes.map { "$BASE_URL$it" }
-            )
-        }
-    }
 
     suspend fun getRoomsByCriteria(startDate: String, endDate: String, numPersonas: Int, extraCama: Boolean): List<Room> {
         return reservaApiService.getAvailableRooms(

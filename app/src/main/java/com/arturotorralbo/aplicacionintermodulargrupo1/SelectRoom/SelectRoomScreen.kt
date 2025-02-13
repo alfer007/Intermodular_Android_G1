@@ -53,7 +53,7 @@ fun SelectRoomScreen(
     numberOfGuests: Int,
     onBackClick: () -> Unit,
     viewModel: RoomViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
     val rooms by viewModel.rooms.collectAsState()
 
