@@ -16,16 +16,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
+import com.arturotorralbo.aplicacionintermodulargrupo1.register.RegisterResult
+import com.arturotorralbo.aplicacionintermodulargrupo1.register.RegisterViewModel
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, registerViewModel: RegisterViewModel = hiltViewModel()) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+
+    val registerState = remember { registerViewModel.registerState }
 
     Column(
         modifier = Modifier
@@ -34,10 +38,7 @@ fun RegisterScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-
         HeaderSection()
-
         Spacer(modifier = Modifier.height(16.dp))
 
         BodySection(
@@ -49,12 +50,28 @@ fun RegisterScreen(navController: NavController) {
             onPasswordChange = { password = it },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = it },
-            navController = navController
+            onRegisterClick = { registerViewModel.registerUser(username, email, password) }
         )
 
         Spacer(modifier = Modifier.height(40.dp))
-
         FooterSection(onClick = { navController.navigate(Login) })
+
+        when (registerState.value) {
+            is RegisterResult.Loading -> CircularProgressIndicator()
+            is RegisterResult.Success -> {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Login)
+                }
+            }
+            is RegisterResult.Error -> {
+                Text(
+                    text = (registerState.value as RegisterResult.Error).message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+            else -> {}
+        }
     }
 }
 
@@ -86,7 +103,7 @@ fun BodySection(
     onPasswordChange: (String) -> Unit,
     passwordVisible: Boolean,
     onPasswordVisibilityChange: (Boolean) -> Unit,
-    navController: NavController
+    onRegisterClick: () -> Unit
 ) {
     OutlinedTextField(
         value = username,
@@ -119,15 +136,13 @@ fun BodySection(
     Spacer(modifier = Modifier.height(24.dp))
 
     Button(
-        onClick = { navController.navigate(Home) },
+        onClick = onRegisterClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF278498)
-        )
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF278498))
     ) {
-        Text(text = "Continue")
+        Text(text = "Register")
     }
 }
 

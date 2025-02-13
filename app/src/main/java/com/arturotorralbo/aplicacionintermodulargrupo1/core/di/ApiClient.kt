@@ -1,12 +1,15 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.core.di
 
+
+import android.content.Context
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.ReservaApiService
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.RoomApiService
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.UserApiServices
-import com.google.gson.Gson
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -34,6 +37,12 @@ object ApiClient {
     fun providesRoomApiService(retrofit: Retrofit): RoomApiService {
         return retrofit.create(RoomApiService::class.java)
     }
+    @Singleton
+    @Provides
+    fun providesTokenManager(@ApplicationContext context: Context): TokenManager {
+        return TokenManager(context)
+    }
+
     @Singleton
     @Provides
     fun providesReservaApiService(retrofit: Retrofit): ReservaApiService {
