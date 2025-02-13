@@ -1,6 +1,8 @@
 package com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +14,7 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.Room.RoomDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.profile.presentation.ProfileScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
@@ -22,6 +25,8 @@ fun NavigationWrapper() {
     val navController = rememberNavController()
     val roomViewModel: RoomViewModel = hiltViewModel()
     val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
+    val context = LocalContext.current
+    val tokenManager = remember { TokenManager(context) }
 
     NavHost(navController = navController, startDestination = Home) {
         composable<Home> {
@@ -34,7 +39,7 @@ fun NavigationWrapper() {
             LoginScreen(navController)
         }
         composable<RoomDetail> {
-            RoomDetailScreen(navController, roomViewModel, selectRoomViewModel)
+            RoomDetailScreen(navController, roomViewModel, selectRoomViewModel, tokenManager = tokenManager, )
         }
         composable<Profile>{
             ProfileScreen(navController)

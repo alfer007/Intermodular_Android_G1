@@ -31,20 +31,26 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.FeatureList
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.GalleryRow
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.RentButton
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Payment
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
+import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginViewModel
 
 
 @Composable
 fun RoomDetailScreen(navController: NavController,
                      roomViewModel: RoomViewModel,
-                     selectRoomViewModel: SelectRoomViewModel
+                     selectRoomViewModel: SelectRoomViewModel,
+                     tokenManager: TokenManager,
+                     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
     val selectedRoom by roomViewModel.selectedRoom.collectAsState()
@@ -159,7 +165,14 @@ fun RoomDetailScreen(navController: NavController,
                     RentButton(price = "${room.precio}€") {
                         selectRoomViewModel.updateTipoHabitacion(room.tipoHabitacion)
                         selectRoomViewModel.updatePrecio(room.precio)
-                        navController.navigate(Payment)
+                        val token = tokenManager.getToken()
+
+                        if (token != null) {
+                            navController.navigate(Payment)
+                        } else {
+                            loginViewModel.setFromPayment(true)
+                            navController.navigate(Login)
+                        }
                     }
                 }
             }

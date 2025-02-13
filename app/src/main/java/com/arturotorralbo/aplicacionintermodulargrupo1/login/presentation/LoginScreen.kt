@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Payment
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Register
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginResult
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginViewModel
@@ -28,8 +29,8 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-
     val loginState = remember { loginViewModel.loginState }
+    val fromPayment by loginViewModel.fromPayment.collectAsState()
 
     Column(
         modifier = Modifier
@@ -59,7 +60,12 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
             is LoginResult.Success -> {
 
                 LaunchedEffect(Unit) {
-                    navController.navigate(Home)
+                    if (fromPayment) {
+                        navController.navigate(Payment)
+                        loginViewModel.setFromPayment(false)
+                    } else {
+                        navController.navigate(Home)
+                    }
                 }
             }
             is LoginResult.Error -> {
