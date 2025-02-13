@@ -37,11 +37,15 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewMo
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.FeatureList
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.GalleryRow
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.components.RentButton
+import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Payment
 
 
 @Composable
-fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel) {
+fun RoomDetailScreen(navController: NavController,
+                     roomViewModel: RoomViewModel,
+                     selectRoomViewModel: SelectRoomViewModel
+) {
 
     val selectedRoom by roomViewModel.selectedRoom.collectAsState()
 
@@ -152,7 +156,11 @@ fun RoomDetailScreen(navController: NavController, roomViewModel: RoomViewModel)
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    RentButton(price = "${room.precio}€") { navController.navigate(Payment) }
+                    RentButton(price = "${room.precio}€") {
+                        selectRoomViewModel.updateTipoHabitacion(room.tipoHabitacion)
+                        selectRoomViewModel.updatePrecio(room.precio)
+                        navController.navigate(Payment)
+                    }
                 }
             }
         }

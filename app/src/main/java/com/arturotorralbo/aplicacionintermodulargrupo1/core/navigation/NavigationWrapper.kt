@@ -33,7 +33,7 @@ fun NavigationWrapper() {
             LoginScreen(navController)
         }
         composable<RoomDetail> {
-            RoomDetailScreen(navController, roomViewModel)
+            RoomDetailScreen(navController, roomViewModel, selectRoomViewModel)
         }
         composable<GalleryDetail> {
             GalleryDetailScreen(navController, roomViewModel)
