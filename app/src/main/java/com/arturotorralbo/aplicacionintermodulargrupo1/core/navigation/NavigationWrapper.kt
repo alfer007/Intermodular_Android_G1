@@ -13,6 +13,7 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.Room.ViewModel.RoomViewMo
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.profile.presentation.ProfileScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.SearchScreen
 
@@ -34,6 +35,9 @@ fun NavigationWrapper() {
         }
         composable<RoomDetail> {
             RoomDetailScreen(navController, roomViewModel)
+        }
+        composable<Profile>{
+            ProfileScreen(navController)
         }
         composable<GalleryDetail> {
             GalleryDetailScreen(navController, roomViewModel)

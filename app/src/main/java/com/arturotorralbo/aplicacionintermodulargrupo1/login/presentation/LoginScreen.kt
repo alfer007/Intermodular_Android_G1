@@ -16,15 +16,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Register
+import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginResult
+import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+
+    val loginState = remember { loginViewModel.loginState }
 
     Column(
         modifier = Modifier
@@ -33,10 +38,7 @@ fun LoginScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-
         HeaderSection()
-
         Spacer(modifier = Modifier.height(16.dp))
 
         BodySection(
@@ -46,12 +48,29 @@ fun LoginScreen(navController: NavController) {
             onPasswordChange = { password = it },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = it },
-            navController = navController
+            onLoginClick = { loginViewModel.loginUser(email, password) }
         )
 
         Spacer(modifier = Modifier.height(40.dp))
+        FooterSection(onClick = { navController.navigate(Register) })
 
-        FooterSection(onClick = { navController.navigate(Register)})
+        when (loginState.value) {
+            is LoginResult.Loading -> CircularProgressIndicator()
+            is LoginResult.Success -> {
+
+                LaunchedEffect(Unit) {
+                    navController.navigate(Home)
+                }
+            }
+            is LoginResult.Error -> {
+                Text(
+                    text = (loginState.value as LoginResult.Error).message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+            else -> {}
+        }
     }
 }
 
@@ -81,7 +100,7 @@ fun BodySection(
     onPasswordChange: (String) -> Unit,
     passwordVisible: Boolean,
     onPasswordVisibilityChange: (Boolean) -> Unit,
-    navController: NavController
+    onLoginClick: () -> Unit
 ) {
     OutlinedTextField(
         value = email,
@@ -104,13 +123,11 @@ fun BodySection(
     Spacer(modifier = Modifier.height(24.dp))
 
     Button(
-        onClick = { navController.navigate(Home)},
+        onClick = onLoginClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF278498)
-        )
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF278498))
     ) {
         Text(text = "Login")
     }
