@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Home
-import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Payment
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Register
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginResult
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginViewModel
@@ -29,8 +29,17 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    val loginState = remember { loginViewModel.loginState }
-    val fromPayment by loginViewModel.fromPayment.collectAsState()
+
+    val loginState = loginViewModel.loginState
+
+    LaunchedEffect(loginState.value) {
+        if (loginState.value is LoginResult.Success) {
+            navController.navigate(Home) {
+                popUpTo(Login) { inclusive = true }
+            }
+            loginViewModel.resetLoginState()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -54,29 +63,6 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
 
         Spacer(modifier = Modifier.height(40.dp))
         FooterSection(onClick = { navController.navigate(Register) })
-
-        when (loginState.value) {
-            is LoginResult.Loading -> CircularProgressIndicator()
-            is LoginResult.Success -> {
-
-                LaunchedEffect(Unit) {
-                    if (fromPayment) {
-                        navController.navigate(Payment)
-                        loginViewModel.setFromPayment(false)
-                    } else {
-                        navController.navigate(Home)
-                    }
-                }
-            }
-            is LoginResult.Error -> {
-                Text(
-                    text = (loginState.value as LoginResult.Error).message,
-                    color = Color.Red,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-            else -> {}
-        }
     }
 }
 

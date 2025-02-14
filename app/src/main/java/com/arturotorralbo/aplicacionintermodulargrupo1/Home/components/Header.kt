@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AppRegistration
 import androidx.compose.material.icons.filled.GpsFixed
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -29,12 +27,11 @@ import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.Home.openGoogleMaps
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Profile
-import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Register
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
 
 @Composable
-fun HeaderSection(navController: NavController, context: Context) {
+fun Header(navController: NavController, context: Context) {
     val tokenManager = remember { TokenManager(context) }
     val token = tokenManager.getToken()
     Row(
