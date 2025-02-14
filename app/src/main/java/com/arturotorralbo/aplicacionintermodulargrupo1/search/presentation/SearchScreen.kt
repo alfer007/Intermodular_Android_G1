@@ -2,11 +2,15 @@ package com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation
 
 import android.app.DatePickerDialog
 import android.content.Context
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.ButtonDefaults
@@ -21,31 +25,59 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.ErrorColor
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
+fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit, navController: NavController, viewModel: SelectRoomViewModel) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
-    var startDate by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
+    val sharedPreferences = context.getSharedPreferences("search_prefs", Context.MODE_PRIVATE)
 
     var showMenu by remember { mutableStateOf(false) }
-    var numberOfGuests by remember { mutableStateOf(1) }
 
     var isInvalidDate by remember { mutableStateOf(false) }
     val today = Calendar.getInstance()
+
+    var startDate by remember { mutableStateOf(sharedPreferences.getString("start_date", "") ?: "") }
+    var endDate by remember { mutableStateOf(sharedPreferences.getString("end_date", "") ?: "") }
+    var numberOfGuests by remember { mutableStateOf(sharedPreferences.getInt("guests", 1)) }
+
+    var cunaChecked by remember { mutableStateOf(sharedPreferences.getBoolean("cuna", false)) }
+    var camaExtraChecked by remember { mutableStateOf(sharedPreferences.getBoolean("cama_extra", false)) }
+    var desayunoChecked by remember { mutableStateOf(sharedPreferences.getBoolean("desayuno", false)) }
+
+    fun savePreferences() {
+        sharedPreferences.edit().apply {
+            putString("start_date", startDate)
+            putString("end_date", endDate)
+            putInt("guests", numberOfGuests)
+            putBoolean("cuna", cunaChecked)
+            putBoolean("cama_extra", camaExtraChecked)
+            putBoolean("desayuno", desayunoChecked)
+            apply()
+        }
+    }
+
+    fun updateViewModelExtras() {
+        val extrasCount = listOf(cunaChecked, camaExtraChecked, desayunoChecked).count { it }
+        viewModel.updateExtrasInt(extrasCount)
+        viewModel.updateExtraCama(camaExtraChecked)
+    }
 
     Box(
         modifier = Modifier
@@ -59,6 +91,21 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                 .fillMaxWidth()
                 .fillMaxHeight(0.4f)
         )
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .padding(35.dp)
+                .size(40.dp)
+                .background(Color.White, shape = RoundedCornerShape(50))
+                .align(Alignment.TopStart)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Volver",
+                tint = Color(0xFF278498),
+                modifier = Modifier.size(24.dp)
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -103,11 +150,24 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                             .fillMaxWidth()
                             .fillMaxHeight(0.25f)
                     )
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.1f)
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CheckBoxItem(label = "Cuna", checked = cunaChecked, onCheckedChange = {
+                            cunaChecked = it
+                            savePreferences()
+                        })
+                        CheckBoxItem(label = "Cama Extra", checked = camaExtraChecked, onCheckedChange = {
+                            camaExtraChecked = it
+                            savePreferences()
+                        })
+                        CheckBoxItem(label = "Desayuno", checked = desayunoChecked, onCheckedChange = {
+                            desayunoChecked = it
+                            savePreferences()
+                        })
+                    }
                     Button(
                         onClick = {
                             DatePickerDialog(
@@ -123,6 +183,7 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                                     } else {
                                         startDate = dateFormat.format(selectedDate)
                                         isInvalidDate = false
+                                        savePreferences()
                                     }
 
                                     DatePickerDialog(
@@ -138,6 +199,7 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                                             } else {
                                                 endDate = dateFormat.format(endSelectedDate)
                                                 isInvalidDate = false
+                                                savePreferences()
                                             }
                                         },
                                         calendar.get(Calendar.YEAR),
@@ -242,7 +304,7 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
                                 Button(
-                                    onClick = { if (numberOfGuests > 1) numberOfGuests-- },
+                                    onClick = { if (numberOfGuests > 1) numberOfGuests--; savePreferences() },
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = Color(0xFF278498)
                                     )
@@ -256,7 +318,7 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                                     color = Color(0xFF278498)
                                 )
                                 Button(
-                                    onClick = { numberOfGuests++ },
+                                    onClick = { numberOfGuests++; savePreferences() },
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = Color(0xFF278498)
                                     )
@@ -271,6 +333,7 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                     Button(
                         onClick = {
                             if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                                updateViewModelExtras()
                                 onNavigateToSelectRoom(startDate, endDate, numberOfGuests)
                             }
                         },
@@ -305,5 +368,35 @@ fun SearchScreen(onNavigateToSelectRoom: (String, String, Int) -> Unit) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CheckBoxItem(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clip(CircleShape)
+            .background(Color.White)
+            .padding(10.dp)
+            .clickable { onCheckedChange(!checked) }
+    ) {
+        Canvas(
+            modifier = Modifier
+                .size(28.dp)
+                .border(2.dp, if (checked) Color(0xFF278498) else Color.Gray, CircleShape)
+                .padding(2.dp)
+        ) {
+            if (checked) {
+                drawCircle(color = Color(0xFF278498))
+            }
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = label,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF278498)
+        )
     }
 }

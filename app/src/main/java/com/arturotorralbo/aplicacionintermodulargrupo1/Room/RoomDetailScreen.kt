@@ -159,6 +159,7 @@ fun RoomDetailScreen(navController: NavController,
                     RentButton(price = "${room.precio}€") {
                         selectRoomViewModel.updateTipoHabitacion(room.tipoHabitacion)
                         selectRoomViewModel.updatePrecio(room.precio)
+                        selectRoomViewModel.updateIdHabitacion(room.idHabitacion)
                         navController.navigate(Payment)
                     }
                 }
