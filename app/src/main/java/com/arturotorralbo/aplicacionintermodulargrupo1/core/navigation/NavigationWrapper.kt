@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.arturotorralbo.aplicacionintermodulargrupo1.Home.HomeScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.home.HomeScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Payment.PaymentScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.GalleryDetailScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.Room.RoomDetailScreen

@@ -24,14 +24,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.arturotorralbo.aplicacionintermodulargrupo1.Home.openGoogleMaps
+
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Profile
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
+import com.arturotorralbo.aplicacionintermodulargrupo1.home.openGoogleMaps
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
 
 @Composable
-fun Header(navController: NavController, context: Context) {
+fun HeaderBar(navController: NavController, context: Context) {
     val tokenManager = remember { TokenManager(context) }
     val token = tokenManager.getToken()
     Row(
@@ -54,7 +55,7 @@ fun Header(navController: NavController, context: Context) {
         )
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             IconButton(onClick = { openGoogleMaps(context) }) {
-                Icon(Icons.Default.GpsFixed, contentDescription = "Teléfono", tint = Color.White)
+                Icon(Icons.Default.GpsFixed, contentDescription = "Teléfono", tint = primaryColorBlue)
             }
             IconButton(onClick = {
                 if (token != null) {
@@ -63,7 +64,7 @@ fun Header(navController: NavController, context: Context) {
                     navController.navigate(Login)
                 }
             }) {
-                Icon(Icons.Default.Person, contentDescription = "Perfil/Login", tint = Color.White)
+                Icon(Icons.Default.Person, contentDescription = "Perfil/Login", tint = primaryColorBlue)
             }
 
         }

@@ -1,9 +1,10 @@
-package com.arturotorralbo.aplicacionintermodulargrupo1.Home
+package com.arturotorralbo.aplicacionintermodulargrupo1.home
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.OptIn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +39,7 @@ import androidx.navigation.NavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Search
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
-import com.arturotorralbo.aplicacionintermodulargrupo1.home.components.Header
+import com.arturotorralbo.aplicacionintermodulargrupo1.home.components.HeaderBar
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
 
 @OptIn(UnstableApi::class)
@@ -68,6 +70,18 @@ fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenM
             }
         )
 
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp) // Ajusta la altura del degradado según necesidad
+                .align(Alignment.TopCenter)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.White.copy(alpha = 0.9f), Color.Transparent)
+                    )
+                )
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,7 +89,7 @@ fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenM
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Header(navController, context)
+            HeaderBar(navController, context)
 
             Box(
                 modifier = Modifier.weight(1f),
