@@ -23,9 +23,10 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Register
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginResult
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.LoginViewModel
+import com.arturotorralbo.aplicacionintermodulargrupo1.profile.ProfileViewModel
 
 @Composable
-fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel(),profileViewModel: ProfileViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -58,7 +59,9 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
             onPasswordChange = { password = it },
             passwordVisible = passwordVisible,
             onPasswordVisibilityChange = { passwordVisible = it },
-            onLoginClick = { loginViewModel.loginUser(email, password) }
+            onLoginClick = { loginViewModel.loginUser(email, password,profileViewModel)
+
+            }
         )
 
         Spacer(modifier = Modifier.height(40.dp))

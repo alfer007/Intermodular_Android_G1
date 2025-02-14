@@ -16,6 +16,7 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomScre
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
 import com.arturotorralbo.aplicacionintermodulargrupo1.login.presentation.LoginScreen
+import com.arturotorralbo.aplicacionintermodulargrupo1.profile.ProfileViewModel
 import com.arturotorralbo.aplicacionintermodulargrupo1.profile.presentation.ProfileScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.register.presentation.RegisterScreen
 import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.SearchScreen
@@ -24,6 +25,8 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.search.presentation.Searc
 fun NavigationWrapper() {
     val navController = rememberNavController()
     val roomViewModel: RoomViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
+
     val selectRoomViewModel: SelectRoomViewModel = hiltViewModel()
     val context = LocalContext.current
     val tokenManager = remember { TokenManager(context) }
@@ -36,13 +39,13 @@ fun NavigationWrapper() {
             RegisterScreen(navController)
         }
         composable<Login> {
-            LoginScreen(navController)
+            LoginScreen(navController,profileViewModel= profileViewModel)
         }
         composable<RoomDetail> {
-            RoomDetailScreen(navController, roomViewModel, selectRoomViewModel, tokenManager = tokenManager, )
+            RoomDetailScreen(navController, roomViewModel, selectRoomViewModel, tokenManager = tokenManager)
         }
         composable<Profile>{
-            ProfileScreen(navController)
+            ProfileScreen(navController, profileViewModel = profileViewModel)
         }
         composable<GalleryDetail> {
             GalleryDetailScreen(navController, roomViewModel)
@@ -70,6 +73,7 @@ fun NavigationWrapper() {
         }
         composable<Payment> {
             PaymentScreen(
+                profileViewModel = profileViewModel,
                 startDate = selectRoomViewModel.startDate.value,
                 endDate = selectRoomViewModel.endDate.value,
                 numberOfGuests = selectRoomViewModel.numberOfGuests.value,
@@ -81,7 +85,7 @@ fun NavigationWrapper() {
                     navController.navigate(Home) {
                         popUpTo(Home) { inclusive = true }
                     }
-                }
+                },
             )
         }
     }

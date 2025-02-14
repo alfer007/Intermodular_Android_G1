@@ -27,7 +27,7 @@ class ProfileViewModel @Inject constructor(
     ))
         private set
 
-    fun fetchUserProfile() {
+    suspend fun  fetchUserProfile() {
         viewModelScope.launch {
 
             val token = tokenManager.getToken()

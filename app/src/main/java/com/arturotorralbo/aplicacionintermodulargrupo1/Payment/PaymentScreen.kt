@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
+import com.arturotorralbo.aplicacionintermodulargrupo1.profile.ProfileViewModel
 import kotlinx.coroutines.delay
 
 val PrimaryColor = Color(0xFF278498)
@@ -65,7 +66,8 @@ fun PaymentScreen(
     userEmail: String = "alvaromayacrespo@gmail.com",
     onBackClick: () -> Unit,
     onNavigateToHome: () -> Unit,
-    selectRoomViewModel: SelectRoomViewModel
+    selectRoomViewModel: SelectRoomViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     var cardNumber by remember { mutableStateOf("") }
     var cardCVV by remember { mutableStateOf("") }
@@ -73,6 +75,8 @@ fun PaymentScreen(
     var cardExpirationDate by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    val user = profileViewModel.user.value
+
 
     fun isPaymentValid(): Boolean {
         return cardNumber.length == 16 &&
@@ -253,10 +257,10 @@ fun PaymentScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text("Nombre:", style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold))
-                        Text(userName, style = TextStyle(fontSize = 16.sp))
+                        Text(profileViewModel.user.value.name, style = TextStyle(fontSize = 16.sp))
                         Spacer(modifier = Modifier.height(4.dp))
                         Text("Correo electrónico:", style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold))
-                        Text(userEmail, style = TextStyle(fontSize = 16.sp))
+                        Text(profileViewModel.user.value.email, style = TextStyle(fontSize = 16.sp))
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Box(

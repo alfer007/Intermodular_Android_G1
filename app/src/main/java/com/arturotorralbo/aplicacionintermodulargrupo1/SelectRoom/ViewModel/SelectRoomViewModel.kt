@@ -22,6 +22,8 @@ class SelectRoomViewModel @Inject constructor(
     val extrasInt = mutableStateOf(0)
     val idHabitacion = mutableStateOf(0)
     val extraCama = mutableStateOf(false)
+    val userName = mutableStateOf("")
+    val userEmail = mutableStateOf("")
 
     fun crearReserva(userName: String, userEmail: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
@@ -56,6 +58,14 @@ class SelectRoomViewModel @Inject constructor(
                 onError("Error en la red: ${e.message}")
             }
         }
+    }
+
+    fun updateUserName(date: String) {
+        startDate.value = date
+    }
+
+    fun updateUserEmail(date: String) {
+        startDate.value = date
     }
 
     fun updateStartDate(date: String) {

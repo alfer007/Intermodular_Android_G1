@@ -29,7 +29,7 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.profile.ProfileViewModel
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    profileViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel: ProfileViewModel
 ) {
     val user = profileViewModel.user.value
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -37,9 +37,9 @@ fun ProfileScreen(
     val updateState = remember { profileViewModel.updateState }
     val deleteState = remember { profileViewModel.deleteState }
 
-    LaunchedEffect(Unit) {
-        profileViewModel.fetchUserProfile()
-    }
+//    LaunchedEffect(Unit) {
+//        profileViewModel.fetchUserProfile()
+//    }
 
     Column(
         modifier = Modifier
