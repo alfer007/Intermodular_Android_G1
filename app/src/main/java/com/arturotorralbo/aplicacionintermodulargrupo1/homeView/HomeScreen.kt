@@ -1,13 +1,12 @@
-package com.arturotorralbo.aplicacionintermodulargrupo1.home
+package com.arturotorralbo.aplicacionintermodulargrupo1.homeView
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,7 +38,7 @@ import androidx.navigation.NavController
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Search
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
-import com.arturotorralbo.aplicacionintermodulargrupo1.home.components.HeaderBar
+import com.arturotorralbo.aplicacionintermodulargrupo1.homeView.components.HeaderBar
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
 
 @OptIn(UnstableApi::class)
@@ -73,11 +72,25 @@ fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenM
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // Ajusta la altura del degradado según necesidad
+                .height(300.dp)
                 .align(Alignment.TopCenter)
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(Color.White.copy(alpha = 0.9f), Color.Transparent)
+                    )
+                )
+        )
+
+        Spacer(modifier = Modifier.height(80.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .align(Alignment.BottomCenter)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.Transparent, Color.White.copy(alpha = 0.9f))
                     )
                 )
         )
@@ -89,6 +102,9 @@ fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenM
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             HeaderBar(navController, context)
 
             Box(
@@ -134,6 +150,7 @@ fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenM
             }
         }
 
+
         DisposableEffect(Unit) {
             onDispose {
                 exoPlayer.release()
@@ -149,18 +166,3 @@ private fun createExoPlayer(context: Context): ExoPlayer {
     }
 }
 
-
-
-fun openGoogleMaps(context: Context) {
-    val address = "C. de la Barca del Bou, 6, 03503 Benidorm, Alicante"
-    val gmmIntentUri = Uri.parse("geo:0,0?q=${Uri.encode(address)}")
-    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-    mapIntent.setPackage("com.google.android.apps.maps")
-
-    if (mapIntent.resolveActivity(context.packageManager) != null) {
-        context.startActivity(mapIntent)
-    } else {
-        val webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=${Uri.encode(address)}")
-        context.startActivity(Intent(Intent.ACTION_VIEW, webUri))
-    }
-}

@@ -1,4 +1,4 @@
-package com.arturotorralbo.aplicacionintermodulargrupo1.home.components
+package com.arturotorralbo.aplicacionintermodulargrupo1.homeView.components
 
 import android.content.Context
 import androidx.compose.foundation.border
@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -28,8 +27,8 @@ import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Profile
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
-import com.arturotorralbo.aplicacionintermodulargrupo1.home.openGoogleMaps
 import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
+import openGoogleMaps
 
 @Composable
 fun HeaderBar(navController: NavController, context: Context) {
@@ -38,19 +37,16 @@ fun HeaderBar(navController: NavController, context: Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = "http://10.0.2.2:3000/images/hotellogoestrellas.png",
+            model = "http://10.0.2.2:3000/images/hotellogoestrellastransparente.png",
             contentDescription = "Logo Hotel",
             modifier = Modifier
                 .height(60.dp)
-                .width(150.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .border(3.dp, primaryColorBlue, RoundedCornerShape(20.dp))
-                .padding(3.dp),
+                .width(180.dp),
             contentScale = ContentScale.FillBounds
         )
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
