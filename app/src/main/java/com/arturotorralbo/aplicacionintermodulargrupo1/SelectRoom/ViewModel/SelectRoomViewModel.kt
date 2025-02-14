@@ -9,6 +9,9 @@ class SelectRoomViewModel : ViewModel() {
     val numberOfGuests = mutableStateOf(1)
     val tipoHabitacion = mutableStateOf("")
     val precio = mutableStateOf(0.0)
+    val extrasInt = mutableStateOf(0)
+    val idHabitacion = mutableStateOf(0)
+    val extraCama = mutableStateOf(false)
 
     fun updateStartDate(date: String) {
         startDate.value = date
@@ -28,6 +31,18 @@ class SelectRoomViewModel : ViewModel() {
 
     fun updatePrecio(nuevoPrecio: Double) {
         precio.value = nuevoPrecio
+    }
+
+    fun updateExtrasInt(extras: Int) {
+        extrasInt.value = extras
+    }
+
+    fun updateExtraCama(extra: Boolean) {
+        extraCama.value = extra
+    }
+
+    fun updateIdHabitacion(id: Int) {
+        idHabitacion.value = id
     }
 
     fun updateDetails(start: String, end: String, guests: Int) {

@@ -22,7 +22,7 @@ class RoomViewModel @Inject constructor(
     private val _selectedRoom = MutableStateFlow<Room?>(null)
     val selectedRoom: StateFlow<Room?> = _selectedRoom.asStateFlow()
 
-    private val _selectedImageIndex = MutableStateFlow(0) // 🔥 Nuevo estado para la imagen seleccionada
+    private val _selectedImageIndex = MutableStateFlow(0)
     val selectedImageIndex: StateFlow<Int> = _selectedImageIndex.asStateFlow()
 
     fun fetchRoomsByCriteria(startDate: String, endDate: String, numPersonas: Int, extraCama: Boolean) {

@@ -52,7 +52,9 @@ fun NavigationWrapper() {
                 onNavigateToSelectRoom = { start, end, guests ->
                     selectRoomViewModel.updateDetails(start, end, guests)
                     navController.navigate(SelectRoom)
-                }
+                },
+                navController = navController,
+                viewModel = selectRoomViewModel
             )
         }
         composable<SelectRoom> {
@@ -62,7 +64,8 @@ fun NavigationWrapper() {
                 numberOfGuests = selectRoomViewModel.numberOfGuests.value,
                 onBackClick = { navController.popBackStack() },
                 viewModel = roomViewModel,
-                navController = navController
+                navController = navController,
+                selectRoomViewModel = selectRoomViewModel
             )
         }
         composable<Payment> {
@@ -71,9 +74,14 @@ fun NavigationWrapper() {
                 endDate = selectRoomViewModel.endDate.value,
                 numberOfGuests = selectRoomViewModel.numberOfGuests.value,
                 roomType = selectRoomViewModel.tipoHabitacion.value,
-                totalPrice = (selectRoomViewModel.precio.value * selectRoomViewModel.calculateNights(selectRoomViewModel.startDate.value, selectRoomViewModel.endDate.value)),
+                totalPrice = ((selectRoomViewModel.precio.value + (selectRoomViewModel.extrasInt.value * 20)) * selectRoomViewModel.calculateNights(selectRoomViewModel.startDate.value, selectRoomViewModel.endDate.value)),
                 selectRoomViewModel = selectRoomViewModel,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onNavigateToHome = {
+                    navController.navigate(Home) {
+                        popUpTo(Home) { inclusive = true }
+                    }
+                }
             )
         }
     }

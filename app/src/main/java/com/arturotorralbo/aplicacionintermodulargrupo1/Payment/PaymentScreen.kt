@@ -17,17 +17,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Composition
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,11 +44,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.SelectRoom.SelectRoomViewModel
+import kotlinx.coroutines.delay
 
 val PrimaryColor = Color(0xFF278498)
 
@@ -55,14 +61,42 @@ fun PaymentScreen(
     numberOfGuests: Int = 1,
     roomType: String = "Habitación Estándar",
     totalPrice: Double = 200.0,
-    userName: String = "John Doe",
-    userEmail: String = "johndoe@example.com",
+    userName: String = "Álvaro Maya",
+    userEmail: String = "alvaromayacrespo@gmail.com",
     onBackClick: () -> Unit,
+    onNavigateToHome: () -> Unit,
     selectRoomViewModel: SelectRoomViewModel
 ) {
     var cardNumber by remember { mutableStateOf("") }
     var cardCVV by remember { mutableStateOf("") }
     var cardHolderName by remember { mutableStateOf("") }
+    var cardExpirationDate by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+
+    fun isPaymentValid(): Boolean {
+        return cardNumber.length == 16 &&
+                cardCVV.length == 3 &&
+                cardExpirationDate.length == 5 &&
+                "/" in cardExpirationDate &&
+                cardHolderName.isNotBlank()
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+
+            },
+            title = { Text("Reserva Creada") },
+            text = { Text("Tu reserva ha sido creada con éxito.") }
+        )
+
+        LaunchedEffect(Unit) {
+            delay(3000)
+            showDialog = false
+            onNavigateToHome()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -168,6 +202,12 @@ fun PaymentScreen(
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         )
                         Text(roomType, style = TextStyle(fontSize = 16.sp))
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            "Extras:",
+                            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        )
+                        Text("${selectRoomViewModel.extrasInt.value} * 20 €/Noche", style = TextStyle(fontSize = 16.sp))
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Box(
@@ -221,8 +261,11 @@ fun PaymentScreen(
 
                         TextField(
                             value = cardNumber,
-                            onValueChange = { cardNumber = it },
+                            onValueChange = {
+                                if (it.all { char -> char.isDigit() } && it.length <= 16) cardNumber = it
+                            },
                             placeholder = { Text("Número de tarjeta") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -233,21 +276,40 @@ fun PaymentScreen(
                         ) {
                             TextField(
                                 value = cardCVV,
-                                onValueChange = { cardCVV = it },
+                                onValueChange = {
+                                    if (it.all { char -> char.isDigit() } && it.length <= 3) cardCVV = it
+                                },
                                 placeholder = { Text("CVV") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(vertical = 4.dp)
                             )
                             TextField(
-                                value = cardHolderName,
-                                onValueChange = { cardHolderName = it },
-                                placeholder = { Text("Nombre del titular") },
+                                value = cardExpirationDate,
+                                onValueChange = { input ->
+                                    if (input.length <= 5 && input.all { it.isDigit() || it == '/' }) {
+                                        cardExpirationDate = when {
+                                            input.length > 2 && input[2] != '/' -> input.substring(0, 2) + "/" + input.substring(2)
+                                            else -> input
+                                        }
+                                    }
+                                },
+                                placeholder = { Text("MM/AA") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(vertical = 4.dp)
                             )
                         }
+                        TextField(
+                            value = cardHolderName,
+                            onValueChange = { cardHolderName = it },
+                            placeholder = { Text("Nombre del titular") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                        )
                     }
                 }
             }
@@ -266,7 +328,9 @@ fun PaymentScreen(
                 ) {
                     Button(
                         onClick = {
-                            // Lógica para el botón Pagar
+                            if (isPaymentValid()) {
+                                showDialog = true
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White,
@@ -275,7 +339,8 @@ fun PaymentScreen(
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .height(60.dp)
-                            .clip(RoundedCornerShape(16.dp))
+                            .clip(RoundedCornerShape(16.dp)),
+                        enabled = isPaymentValid()
                     ) {
                         Text(
                             text = "Pagar",

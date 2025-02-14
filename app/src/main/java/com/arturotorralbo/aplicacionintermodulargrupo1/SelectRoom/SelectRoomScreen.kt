@@ -54,6 +54,7 @@ fun SelectRoomScreen(
     onBackClick: () -> Unit,
     viewModel: RoomViewModel = hiltViewModel(),
     navController: NavController,
+    selectRoomViewModel: SelectRoomViewModel
 ) {
     val rooms by viewModel.rooms.collectAsState()
 
@@ -67,7 +68,7 @@ fun SelectRoomScreen(
         val formattedStartDate = formatDate(startDate)
         val formattedEndDate = formatDate(endDate)
         println("La fecha: $formattedStartDate")
-        viewModel.fetchRoomsByCriteria(formattedStartDate, formattedEndDate, numberOfGuests, false)
+        viewModel.fetchRoomsByCriteria(formattedStartDate, formattedEndDate, numberOfGuests, selectRoomViewModel.extraCama.value)
     }
 
     Box(
