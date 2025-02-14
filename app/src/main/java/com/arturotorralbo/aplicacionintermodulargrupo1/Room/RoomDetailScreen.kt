@@ -44,7 +44,9 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Payment
 @Composable
 fun RoomDetailScreen(navController: NavController,
                      roomViewModel: RoomViewModel,
-                     selectRoomViewModel: SelectRoomViewModel
+                     selectRoomViewModel: SelectRoomViewModel,
+                     tokenManager: TokenManager,
+                     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
     val selectedRoom by roomViewModel.selectedRoom.collectAsState()
@@ -159,8 +161,14 @@ fun RoomDetailScreen(navController: NavController,
                     RentButton(price = "${room.precio}€") {
                         selectRoomViewModel.updateTipoHabitacion(room.tipoHabitacion)
                         selectRoomViewModel.updatePrecio(room.precio)
-                        selectRoomViewModel.updateIdHabitacion(room.idHabitacion)
-                        navController.navigate(Payment)
+                        val token = tokenManager.getToken()
+
+                        if (token != null) {
+                            navController.navigate(Payment)
+                        } else {
+                            loginViewModel.setFromPayment(true)
+                            navController.navigate(Login)
+                        }
                     }
                 }
             }

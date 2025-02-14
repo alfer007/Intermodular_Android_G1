@@ -8,6 +8,9 @@ import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.UserApiS
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.models.User
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +22,12 @@ class LoginViewModel @Inject constructor(
 
     var loginState = mutableStateOf<LoginResult>(LoginResult.Idle)
         private set
+    private val _fromPayment = MutableStateFlow(false)
+    val fromPayment: StateFlow<Boolean> = _fromPayment.asStateFlow()
+
+    fun setFromPayment(value: Boolean) {
+        _fromPayment.value = value
+    }
 
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
