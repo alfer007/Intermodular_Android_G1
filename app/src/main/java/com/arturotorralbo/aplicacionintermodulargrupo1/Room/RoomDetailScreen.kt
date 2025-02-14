@@ -165,14 +165,7 @@ fun RoomDetailScreen(navController: NavController,
                     RentButton(price = "${room.precio}€") {
                         selectRoomViewModel.updateTipoHabitacion(room.tipoHabitacion)
                         selectRoomViewModel.updatePrecio(room.precio)
-                        val token = tokenManager.getToken()
-
-                        if (token != null) {
-                            navController.navigate(Payment)
-                        } else {
-                            loginViewModel.setFromPayment(true)
-                            navController.navigate(Login)
-                        }
+                        navController.navigate(Payment)
                     }
                 }
             }

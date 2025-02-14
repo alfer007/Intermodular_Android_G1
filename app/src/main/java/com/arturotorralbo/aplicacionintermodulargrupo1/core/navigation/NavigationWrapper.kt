@@ -30,7 +30,7 @@ fun NavigationWrapper() {
 
     NavHost(navController = navController, startDestination = Home) {
         composable<Home> {
-            HomeScreen(navController)
+            HomeScreen(navController, tokenManager)
         }
         composable<Register> {
             RegisterScreen(navController)

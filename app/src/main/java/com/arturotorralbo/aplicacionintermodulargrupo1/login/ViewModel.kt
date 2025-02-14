@@ -22,12 +22,6 @@ class LoginViewModel @Inject constructor(
 
     var loginState = mutableStateOf<LoginResult>(LoginResult.Idle)
         private set
-    private val _fromPayment = MutableStateFlow(false)
-    val fromPayment: StateFlow<Boolean> = _fromPayment.asStateFlow()
-
-    fun setFromPayment(value: Boolean) {
-        _fromPayment.value = value
-    }
 
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
@@ -36,10 +30,13 @@ class LoginViewModel @Inject constructor(
                 val response = userApiServices.checkUser(User(email = email, password = password))
                 if (response.isSuccessful) {
                     val body = response.body()
-                    if (body != null) {
+                    if (body?.token != null) {
                         tokenManager.saveToken(body.token)
                         tokenManager.saveEmail(email)
                         loginState.value = LoginResult.Success
+
+                    } else {
+                        loginState.value = LoginResult.Error("Respuesta inválida del servidor.")
                     }
                 } else {
                     loginState.value = LoginResult.Error("Usuario o contraseña incorrectos")
@@ -48,6 +45,9 @@ class LoginViewModel @Inject constructor(
                 loginState.value = LoginResult.Error("Error: ${e.localizedMessage}")
             }
         }
+    }
+    fun resetLoginState() {
+        loginState.value = LoginResult.Idle
     }
 }
 

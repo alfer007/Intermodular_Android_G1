@@ -34,12 +34,15 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Login
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.navigation.Search
-import com.arturotorralbo.aplicacionintermodulargrupo1.home.components.HeaderSection
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
+import com.arturotorralbo.aplicacionintermodulargrupo1.home.components.Header
+import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
 
 @OptIn(UnstableApi::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenManager(LocalContext.current) ) {
     val context = LocalContext.current
     val exoPlayer = remember { createExoPlayer(context) }
 
@@ -72,7 +75,7 @@ fun HomeScreen(navController: NavController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderSection(navController, context)
+            Header(navController, context)
 
             Box(
                 modifier = Modifier.weight(1f),
@@ -98,13 +101,20 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
-                onClick = { navController.navigate(Search) },
+                onClick = {
+                    val token = tokenManager.getToken()
+                    if (token != null) {
+                        navController.navigate(Search)
+                    } else {
+                        navController.navigate(Login)
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
                     .height(50.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF278498))
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColorBlue)
             ) {
                 Text(text = "Reservar", color = Color.White, style = MaterialTheme.typography.titleMedium)
             }
