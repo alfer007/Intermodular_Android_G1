@@ -12,20 +12,11 @@ interface ReservaApiService {
     @POST("reservas/create")
     suspend fun createReserva(@Body reserva: Reserva): Response<Void>
 
-    @GET("reservas/getAll")
-    suspend fun getAllReservas(): Response<List<Reserva>>
-
     @POST("reservas/filter")
     suspend fun getFilteredReservas(@Body filters: Map<String, Any>): Response<List<Reserva>>
 
-    @PATCH("reservas/update")
-    suspend fun updateReserva(@Body reserva: Reserva): Response<Void>
-
     @POST("reservas/delete")
     suspend fun deleteReserva(@Body id: Map<String, Int>): Response<Void>
-
-    @POST("reservas/getHabitaciones")
-    suspend fun getHabitacionesDisponibles(@Body filters: Map<String, String>): Response<List<Room>>
 
     @POST("reservas/getPrimerasHabitaciones")
     suspend fun getAvailableRooms(@Body criteria: Map<String, String>): List<Room>

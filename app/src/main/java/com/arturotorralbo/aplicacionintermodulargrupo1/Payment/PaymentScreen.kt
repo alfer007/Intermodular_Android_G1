@@ -72,6 +72,7 @@ fun PaymentScreen(
     var cardHolderName by remember { mutableStateOf("") }
     var cardExpirationDate by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     fun isPaymentValid(): Boolean {
         return cardNumber.length == 16 &&
@@ -79,6 +80,19 @@ fun PaymentScreen(
                 cardExpirationDate.length == 5 &&
                 "/" in cardExpirationDate &&
                 cardHolderName.isNotBlank()
+    }
+
+    if (errorMessage != null) {
+        AlertDialog(
+            onDismissRequest = { errorMessage = null },
+            confirmButton = {
+                TextButton(onClick = { errorMessage = null }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Error") },
+            text = { Text(errorMessage!!) }
+        )
     }
 
     if (showDialog) {
@@ -329,24 +343,21 @@ fun PaymentScreen(
                     Button(
                         onClick = {
                             if (isPaymentValid()) {
-                                showDialog = true
+                                selectRoomViewModel.crearReserva(
+                                    userName = userName,
+                                    userEmail = userEmail,
+                                    onSuccess = { showDialog = true },
+                                    onError = { error -> errorMessage = error }
+                                )
+                            } else {
+                                errorMessage = "Datos de tarjeta inválidos."
                             }
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White,
-                            contentColor = PrimaryColor
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f)
-                            .height(60.dp)
-                            .clip(RoundedCornerShape(16.dp)),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = PrimaryColor),
+                        modifier = Modifier.fillMaxWidth(0.8f).height(60.dp).clip(RoundedCornerShape(16.dp)),
                         enabled = isPaymentValid()
                     ) {
-                        Text(
-                            text = "Pagar",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
-                        )
+                        Text(text = "Pagar", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     }
                 }
             }
