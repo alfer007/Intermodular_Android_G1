@@ -348,8 +348,8 @@ fun PaymentScreen(
                         onClick = {
                             if (isPaymentValid()) {
                                 selectRoomViewModel.crearReserva(
-                                    userName = userName,
-                                    userEmail = userEmail,
+                                    userName = user.name,
+                                    userEmail = user.email,
                                     onSuccess = { showDialog = true },
                                     onError = { error -> errorMessage = error }
                                 )
