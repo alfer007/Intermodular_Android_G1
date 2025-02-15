@@ -13,7 +13,7 @@ interface ReservaApiService {
     suspend fun createReserva(@Body reserva: Reserva): Response<Void>
 
     @POST("reservas/filter")
-    suspend fun getFilteredReservas(@Body filters: Map<String, Any>): Response<List<Reserva>>
+    suspend fun getFilteredReservas(@Body filters: Map<String, String>): Response<List<Reserva>>
 
     @POST("reservas/delete")
     suspend fun deleteReserva(@Body id: Map<String, Int>): Response<Void>
