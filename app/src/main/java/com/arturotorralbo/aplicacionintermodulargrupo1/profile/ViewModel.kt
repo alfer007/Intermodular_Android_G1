@@ -3,7 +3,9 @@ package com.arturotorralbo.aplicacionintermodulargrupo1.profile
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.ReservaApiService
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.apiServices.UserApiServices
+import com.arturotorralbo.aplicacionintermodulargrupo1.core.models.Reserva
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.models.User
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.utils.TokenManager
 
@@ -14,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userApiServices: UserApiServices,
+    private val reservaApiService: ReservaApiService,
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
@@ -26,7 +29,8 @@ class ProfileViewModel @Inject constructor(
         adress = ""
     ))
         private set
-
+    var reservas = mutableStateOf<List<Reserva>>(emptyList())
+        private set
     suspend fun  fetchUserProfile() {
         viewModelScope.launch {
 
@@ -60,6 +64,24 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchUserReservas() {
+        viewModelScope.launch {
+            val email = tokenManager.getEmail() ?: return@launch
+            try {
+                val filters = mapOf("cliente.email" to email)
+                val response = reservaApiService.getFilteredReservas(filters)
+                if (response.isSuccessful) {
+                    reservas.value = response.body() ?: emptyList()
+                } else {
+                    println("Error al obtener reservas: ${response.message()}")
+                }
+            } catch (e: Exception) {
+                println("Error al obtener reservas: ${e.localizedMessage}")
+            }
+        }
+    }
+
 
     var updateState = mutableStateOf<ProfileResult>(ProfileResult.Idle)
         private set
