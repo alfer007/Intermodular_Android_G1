@@ -39,7 +39,7 @@ class SelectRoomViewModel @Inject constructor(
                 val reserva = Reserva(
                     idHabitacion = idHabitacion.value,
                     cliente = Cliente(nombre = userName, email = userEmail),
-                    precio = precio.value,
+                    precio = ((precio.value + (extrasInt.value * 20)) * calculateNights(startDate.value, endDate.value)),
                     fechaInicio = formattedStartDate,
                     fechaSalida = formattedEndDate,
                     tipoHabitacion = tipoHabitacion.value,
