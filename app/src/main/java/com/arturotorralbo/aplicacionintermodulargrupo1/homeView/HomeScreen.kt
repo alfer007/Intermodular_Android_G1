@@ -161,7 +161,7 @@ fun HomeScreen(navController: NavController, tokenManager: TokenManager = TokenM
 
 private fun createExoPlayer(context: Context): ExoPlayer {
     return ExoPlayer.Builder(context).build().apply {
-        val mediaItem = MediaItem.fromUri("https://i.imgur.com/KQCZPAU.mp4")
+        val mediaItem = MediaItem.fromUri("http://10.0.2.2:3000/images/HomeVideo.mp4")
         setMediaItem(mediaItem)
     }
 }

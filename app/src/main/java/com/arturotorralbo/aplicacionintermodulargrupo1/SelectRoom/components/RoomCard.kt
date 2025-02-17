@@ -15,11 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.arturotorralbo.aplicacionintermodulargrupo1.core.models.Room
+import com.arturotorralbo.aplicacionintermodulargrupo1.ui.theme.primaryColorBlue
 
 @Composable
 fun RoomCard(room: Room, onClick: () -> Unit) {
@@ -54,7 +54,7 @@ fun RoomCard(room: Room, onClick: () -> Unit) {
             Button(
                 onClick = onClick,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF278498)
+                    containerColor = primaryColorBlue
                 ),
                 ) {
                 Text("Ver Detalles")
