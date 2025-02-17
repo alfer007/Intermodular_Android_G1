@@ -72,14 +72,14 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
 @Composable
 fun HeaderSection() {
     Text(
-        text = "Login",
+        text = "Iniciar sesión",
         style = MaterialTheme.typography.headlineMedium.copy(
             color = Color(0xFF278498),
             fontWeight = FontWeight.Bold
         )
     )
     Text(
-        text = "Login to access your accout.",
+        text = "Inicia sesión para acceder a tu cuenta.",
         style = MaterialTheme.typography.bodyMedium,
         color = Color.Gray,
         modifier = Modifier.padding(vertical = 8.dp),
@@ -100,7 +100,7 @@ fun BodySection(
     OutlinedTextField(
         value = email,
         onValueChange = onEmailChange,
-        label = { Text("Email Address") },
+        label = { Text("Dirección de email") },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         modifier = Modifier.fillMaxWidth()
@@ -124,7 +124,7 @@ fun BodySection(
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF278498))
     ) {
-        Text(text = "Login")
+        Text(text = "Iniciar sesión")
     }
 }
 
@@ -138,7 +138,7 @@ fun PasswordField(
     OutlinedTextField(
         value = password,
         onValueChange = onPasswordChange,
-        label = { Text("Password") },
+        label = { Text("Contraseña") },
         singleLine = true,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
@@ -157,13 +157,13 @@ fun FooterSection(onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Don’t have an account? ",
+            text = "No tienes una cuenta? ",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
         TextButton(onClick = onClick) {
             Text(
-                text = "Sign Up",
+                text = "Registrate",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
