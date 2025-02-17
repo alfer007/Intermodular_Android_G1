@@ -78,14 +78,14 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
 @Composable
 fun HeaderSection() {
     Text(
-        text = "Register",
+        text = "Registrarse",
         style = MaterialTheme.typography.headlineMedium.copy(
             color = Color(0xFF278498),
             fontWeight = FontWeight.Bold
         )
     )
     Text(
-        text = "Fill your information below to create an account.",
+        text = "Rellena la informacion a continuación para crear una cuneta.",
         style = MaterialTheme.typography.bodyMedium,
         color = Color.Gray,
         modifier = Modifier.padding(vertical = 8.dp),
@@ -108,7 +108,7 @@ fun BodySection(
     OutlinedTextField(
         value = username,
         onValueChange = onUsernameChange,
-        label = { Text("Username") },
+        label = { Text("Nombre de Usuario") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth()
     )
@@ -118,7 +118,7 @@ fun BodySection(
     OutlinedTextField(
         value = email,
         onValueChange = onEmailChange,
-        label = { Text("Email Address") },
+        label = { Text("Dirección de email") },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         modifier = Modifier.fillMaxWidth()
@@ -142,7 +142,7 @@ fun BodySection(
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF278498))
     ) {
-        Text(text = "Register")
+        Text(text = "Registrarse")
     }
 }
 
@@ -156,7 +156,7 @@ fun PasswordField(
     OutlinedTextField(
         value = password,
         onValueChange = onPasswordChange,
-        label = { Text("Password") },
+        label = { Text("Contraseña") },
         singleLine = true,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
@@ -175,13 +175,13 @@ fun FooterSection(onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Already have an account? ",
+            text = "Ya tienes una cuenta? ",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
         TextButton(onClick = onClick) {
             Text(
-                text = "Login",
+                text = "Iniciar sesión",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
